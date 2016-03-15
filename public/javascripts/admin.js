@@ -4,9 +4,36 @@
 
 $(function () {
 
+    //获取所有用户
+    function getAllUser(){
+        $.ajax({
+            type:'GET',
+            url:"/api/user",
+            "contentType":"application/x-www-form-urlencoded",
+            success:function(data){
+                var str = "";
+                $.each(data, function(index, item){
+                    str += '<tr><td class="username">'+ item.telphone +'</td><td class="age">'+ item.password +'</td>' +
+                        '<td class="col-sm-4">' +
+                        '<button type="button" class="btn btn-info edit" id_attr="'+item._id+'">Edit</button>' +
+                        '<button type="button" class="btn btn-warning col-sm-offset-1 remove" id_attr="'+item._id+'">Remove</button>' +
+                        '</td></tr>';
+                })
+                $('.table tbody').html(str);
+
+            }
+        })
+    }
+    getAllUser()
+
+
     //注册
     $('.sureReg').on('click',function(){
 
+        if($(this).hasClass("sureUpdate"))
+        {
+            return;
+        }
         var data = {
             telphone:$('.regform').find("[name='telphone']").val(),
             password:$('.regform').find("[name='password']").val()
@@ -44,7 +71,63 @@ $(function () {
 
             }
         })
-
-
     })
+
+    //编辑
+    $('body').on('click','.edit', function(){
+
+        var id = $(this).attr('id_attr');
+        var telphone = $(this).parent().parent().find('.username').html();
+
+        $('.regform').find("[name='telphone']").val(telphone);
+        $('.regform').find("#add").removeClass('sureReg').addClass("sureUpdate");
+
+
+        $('.sureUpdate').on('click',function(){
+            $.ajax({
+                url: '/api/user/'+id,
+                type: 'PUT',
+                "contentType":"application/x-www-form-urlencoded",
+                data:$(".regform").serialize(),
+                success: function(data){
+                    $('.regform').find("#add").addClass('sureReg').removeClass("sureUpdate");
+                    if(data.status == 'OK'){
+                        console.log('update success', data.value);
+                        getAllUser();
+                    }
+                },
+                error: function(xhr, status, err){
+                    console.error('Add fail' + err);
+                }
+            });
+
+        })
+
+    });
+
+    //删除
+    $('body').on('click','.remove', function(){
+        $(this).parent().parent().remove();
+        var id = $(this).attr('id_attr');
+        $.ajax({
+            url: '/api/user/'+id,
+            type: 'DELETE',
+            "contentType":"application/x-www-form-urlencoded",
+            success: function(data){
+                if(data.status == 'success'){
+                    console.log('remove success', data.value);
+                }
+            },
+            error: function(xhr, status, err){
+                console.error('Add fail' + err);
+            }
+        });
+    });
+
+
+
+
+
+
+
 })
