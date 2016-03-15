@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var UserModel = require('./user.model').UserModel;
+var crypto = require('crypto');
+function encrypt(str){
+  return crypto.createHash('md5').update(str).digest('hex');
+}
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -26,10 +30,8 @@ router.post('/user',function(req,res){
 
   console.log('req body' + req.body);
   var user = new UserModel({
-    firstname:req.body.firstname,
-    surname:req.body.surname,
-    username:req.body.username,
-    password:req.body.password
+    telphone:req.body.telphone,
+    password:encrypt(req.body.password)
   })
 
   user.save(function(err){
@@ -97,14 +99,11 @@ router.put('/user/:id',function(req,res){
       res.statusCode == 400;
       return res.send({error:"Not found"});
     }
-
-    user.firstname = req.body.firstname;
-    user.surname = req.body.surname;
-    user.username = req.body.username;
-    user.password = req.body.password;
+    user.telphone = req.body.telphone;
+    user.password = encrypt(req.body.password);
 
     return user.save(function(err){
-
+      console.log(err);
       if(!err){
 
         console.log("User updated");

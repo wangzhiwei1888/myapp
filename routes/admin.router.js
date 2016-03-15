@@ -2,8 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: '周报系统' });
+router.get('/usermanger', function(req, res, next) {
+    res.render('admin', { title: '用户管理' });
 });
 
 module.exports = router;
