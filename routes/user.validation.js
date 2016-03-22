@@ -15,5 +15,11 @@ module.exports = {
 
         var phoneReg = /^1[3|4|5|8|7][0-9]\d{8}$/;
         return phoneReg.test(input);
+    },
+    checkUsername:function(input){
+
+        //var phoneReg = /^1[3|4|5|8|7][0-9]\d{8}$/;
+        return input.length>=2;
+
     }
 }

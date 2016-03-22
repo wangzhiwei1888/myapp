@@ -11,7 +11,11 @@
 <body style="width:80%; margin: 0 auto;">
 <form  class="regform">
 <div id="form" style="padding-bottom: 30px;">
-    <h2 class="form-title">Add user</h2>
+    <h2 class="form-title">添加用户</h2>
+    <div class="form-group">
+        <label for="username" >用户名</label>
+        <input type="text" class="form-control" name="username" placeholder="Please input your username"/>
+    </div>
     <div class="form-group">
         <label for="telphone" >手机号</label>
         <input type="text" class="form-control" name="telphone" placeholder="Please input your telphone"/>
@@ -31,6 +35,7 @@
         <table class="table table-hover">
             <thead>
             <tr>
+                <th>username</th>
                 <th>telphone</th>
                 <th>password</th>
                 <th>Operations</th>

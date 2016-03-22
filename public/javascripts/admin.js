@@ -13,7 +13,7 @@ $(function () {
             success:function(data){
                 var str = "";
                 $.each(data, function(index, item){
-                    str += '<tr><td class="username">'+ item.telphone +'</td><td class="age">'+ item.password +'</td>' +
+                    str += '<tr><td class="username">'+ item.username +'</td><td class="telphone">'+ item.telphone +'</td><td class="age">'+ item.password +'</td>' +
                         '<td class="col-sm-4">' +
                         '<button type="button" class="btn btn-info edit" id_attr="'+item._id+'">Edit</button>' +
                         '<button type="button" class="btn btn-warning col-sm-offset-1 remove" id_attr="'+item._id+'">Remove</button>' +
@@ -35,6 +35,7 @@ $(function () {
             return;
         }
         var data = {
+            username:$('.regform').find("[name='username']").val(),
             telphone:$('.regform').find("[name='telphone']").val(),
             password:$('.regform').find("[name='password']").val()
         };
@@ -59,7 +60,7 @@ $(function () {
 
                 if(resp.status == "OK"){
                     var data = resp.user;
-                    var str = '<tr><td class="username">'+ data.telphone +'</td><td class="password">'+ data.password +'</td>' +
+                    var str = '<tr><td class="username">'+ data.username +'</td><td class="telphone">'+ data.telphone +'</td><td class="password">'+ data.password +'</td>' +
                         '<td class="col-sm-4">' +
                         '<button type="button" class="btn btn-info edit" id_attr="'+data._id+'">Edit</button>' +
                         '<button type="button" class="btn btn-warning col-sm-offset-1 remove" id_attr="'+data._id+'">Remove</button>' +
@@ -77,8 +78,10 @@ $(function () {
     $('body').on('click','.edit', function(){
 
         var id = $(this).attr('id_attr');
-        var telphone = $(this).parent().parent().find('.username').html();
+        var telphone = $(this).parent().parent().find('.telphone').html();
+        var username = $(this).parent().parent().find('.username').html();
 
+        $('.regform').find("[name='username']").val(username);
         $('.regform').find("[name='telphone']").val(telphone);
         $('.regform').find("#add").removeClass('sureReg').addClass("sureUpdate");
 

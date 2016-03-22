@@ -16,7 +16,7 @@
 .l,.c,.r{ float: left;}
 .r{ float: right;}
 
-.clearbox span{ padding: 0 5px; color: #337ab7; }
+.clearbox span{ padding: 0 5px; color: #337ab7; cursor: pointer; }
 .content{ width: 80%; margin-left: 10%; margin-right: 10%; }
 
 

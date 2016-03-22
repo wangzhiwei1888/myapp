@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var UserModel = require('./user.model').UserModel;
+var middleware = require('../middleware');
 var crypto = require('crypto');
 function encrypt(str){
   return crypto.createHash('md5').update(str).digest('hex');
@@ -30,6 +31,7 @@ router.post('/user',function(req,res){
 
   console.log('req body' + req.body);
   var user = new UserModel({
+    username:req.body.username,
     telphone:req.body.telphone,
     password:encrypt(req.body.password)
   })
@@ -37,6 +39,8 @@ router.post('/user',function(req,res){
   user.save(function(err){
 
     if(!err){
+
+      req.session.user = user;
       console.log("User "+ user.username + "created!");
       res.send({status:'OK',user:user});
 
@@ -99,6 +103,7 @@ router.put('/user/:id',function(req,res){
       res.statusCode == 400;
       return res.send({error:"Not found"});
     }
+    user.username = req.body.username;
     user.telphone = req.body.telphone;
     user.password = encrypt(req.body.password);
 
